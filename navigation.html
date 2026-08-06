@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的导航</title>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="bg-overlay" class="bg-overlay hidden"></div>
+<div class="deco-dots"></div>
+<div class="deco-glow"></div>
+
+<div class="page">
+  <!-- Clock + Search -->
+  <div style="display:flex;flex-direction:column;align-items:center;">
+    <div class="clock-wrap">
+      <div class="clock-time">
+        <span id="c-h">00</span><span class="colon" id="c-c1">:</span>
+        <span id="c-m">00</span><span class="colon" id="c-c2">:</span>
+        <span class="sec" id="c-s">00</span>
+      </div>
+      <p class="clock-date" id="c-date"></p>
+    </div>
+
+    <div class="search-wrap">
+      <div class="search-box" id="search-box">
+        <div class="search-engine-wrap">
+          <select id="engine-select" class="search-engine-select"></select>
+          <span class="caret">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+        <input id="search-input" class="search-input" type="text" placeholder="搜索...">
+        <button id="search-btn" class="search-btn" title="搜索">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Recent below search -->
+    <div class="sub-widgets">
+      <div id="recent"></div>
+    </div>
+  </div>
+
+  <!-- Bookmarks -->
+  <div class="section-head">
+    <p class="count" id="group-count"></p>
+    <div class="seg" id="view-seg">
+      <button data-mode="icon" id="seg-icon">图标模式</button>
+      <button data-mode="card" id="seg-card">卡片模式</button>
+    </div>
+  </div>
+  <div id="groups"></div>
+
+  <!-- Action bar -->
+  <div class="action-bar">
+    <button class="btn" id="btn-add" data-tooltip="添加网址">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+    <button class="btn" id="btn-import" data-tooltip="导入收藏夹">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><path d="M12 9v4M10 11h4"/></svg>
+    </button>
+    <button class="btn" id="btn-export" data-tooltip="导出备份">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </button>
+    <button class="btn" id="btn-restore" data-tooltip="恢复备份">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    </button>
+    <button class="btn" id="btn-theme" data-tooltip="切换主题">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="btn" id="btn-bg" data-tooltip="背景设置">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    </button>
+    <button class="btn" id="btn-clear" data-tooltip="清空网址">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Add / Edit modal -->
+<div id="add-modal" class="modal-mask hidden">
+  <div class="modal-card max-w-md">
+    <div class="modal-head">
+      <h2 id="add-title">添加网址</h2>
+      <button class="modal-close" data-close="add">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
+      <div class="icon-preview" id="icon-preview">
+        <img id="icon-preview-img" class="hidden" alt="图标预览">
+        <span id="icon-preview-letter"></span>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <p style="font-size:0.875rem;font-weight:500;margin-bottom:2px;">网站图标</p>
+        <p style="font-size:0.75rem;line-height:1.4;color:var(--muted);margin-bottom:8px;">选择图标的获取方式</p>
+        <div class="icon-actions">
+          <button type="button" class="icon-btn" id="btn-fetch-icon">获取网站图标</button>
+          <button type="button" class="icon-btn" id="btn-upload-icon">上传图标</button>
+          <button type="button" class="icon-btn" id="btn-letter-icon">使用文字图标</button>
+        </div>
+      </div>
+      <input id="icon-file" type="file" accept="image/*,.ico" class="hidden">
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">网站名称</label>
+      <input id="f-name" class="form-input" placeholder="如：抖音">
+    </div>
+    <div class="form-row">
+      <label class="form-label">网站地址（无需填写 https://）</label>
+      <input id="f-url" class="form-input" placeholder="如：douyin.com">
+    </div>
+    <div class="form-row">
+      <label class="form-label">所属分组</label>
+      <select id="f-category" class="form-input"></select>
+      <input id="f-custom-cat" class="form-input hidden" style="margin-top:8px;" placeholder="输入新分组名称">
+    </div>
+
+    <div class="modal-btns">
+      <button class="btn-cancel" data-close="add">取消</button>
+      <button class="btn-primary" id="add-submit">添加网址</button>
+    </div>
+  </div>
+</div>
+
+<!-- Import modal -->
+<div id="import-modal" class="modal-mask hidden">
+  <div class="modal-card max-w-lg">
+    <div class="modal-head">
+      <h2>导入收藏夹</h2>
+      <button class="modal-close" data-close="import">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <p class="hint-text">在 Chrome 中：菜单 → 书签 → 书签管理器 → 导出书签，然后上传 HTML 文件即可自动分组导入。</p>
+    <div class="drop-zone" id="drop-zone">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-bottom:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <p class="dz-name" id="dz-name">点击或拖拽收藏夹 HTML 文件到此处</p>
+      <p class="dz-sub">支持 Chrome、Edge、Firefox、Safari 导出的 HTML 格式</p>
+      <input id="import-file" type="file" accept=".html,.htm" class="hidden">
+    </div>
+    <div id="import-error" class="error-box hidden"></div>
+    <div id="import-preview" class="preview-box hidden"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" data-close="import">取消</button>
+      <button class="btn-primary" id="import-submit">导入收藏夹</button>
+    </div>
+  </div>
+</div>
+
+<!-- Background modal -->
+<div id="bg-modal" class="modal-mask hidden">
+  <div class="modal-card max-w-md">
+    <div class="modal-head">
+      <h2>背景设置</h2>
+      <button class="modal-close" data-close="bg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div id="bg-preview" class="bg-preview hidden">
+      <img id="bg-preview-img" alt="当前背景">
+    </div>
+
+    <div class="bg-option" id="opt-none">
+      <div class="ico">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="13.5" cy="6.5" r="0.5" fill="currentColor"/><circle cx="17.5" cy="10.5" r="0.5" fill="currentColor"/><circle cx="8.5" cy="7.5" r="0.5" fill="currentColor"/><circle cx="6.5" cy="12.5" r="0.5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+      </div>
+      <div>
+        <p class="ot">纯色背景</p>
+        <p class="os">使用当前深色/浅色主题颜色</p>
+      </div>
+    </div>
+
+    <div class="bg-option" id="opt-bing">
+      <div class="ico" style="background:linear-gradient(135deg,#0078D4,#00A86B);color:#fff;">
+        <svg id="bing-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div>
+        <p class="ot">随机必应壁纸</p>
+        <p class="os">一键获取每日精选高清壁纸</p>
+      </div>
+    </div>
+
+    <div class="bg-option" id="opt-upload">
+      <div class="ico" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div>
+        <p class="ot">上传本地图片</p>
+        <p class="os">支持 JPG、PNG、WebP 格式</p>
+      </div>
+      <input id="bg-file" type="file" accept="image/*" class="hidden">
+    </div>
+
+    <div id="bg-error" class="error-box hidden"></div>
+
+    <button class="btn w-100" id="bg-close" style="justify-content:center;padding:0.625rem;">关闭</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
