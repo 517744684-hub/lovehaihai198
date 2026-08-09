@@ -130,8 +130,6 @@ for(const id of ["hotPrev","hotNext","hotRefresh"]){const old=$("#"+id),fresh=ol
 $("#hotPrev").addEventListener("click",()=>{if(hotPage>0){hotPage--;renderReferenceHot()}});
 $("#hotNext").addEventListener("click",()=>{if((hotPage+1)*8<hotItems.length){hotPage++;renderReferenceHot()}});
 $("#hotRefresh").addEventListener("click",loadThirdPartyHot);
-loadThirdPartyHot();
-
 const THIRD_PARTY_WALLPAPER="https://v2.xxapi.cn/api/random4kPic?type=wallpaper";
 function saveThirdPartyWallpaper(value){backgroundState={type:"bing",value};localStorage.setItem(BACKGROUND_KEY,JSON.stringify(backgroundState));applyBackground()}
 async function requestThirdPartyWallpaper(){
@@ -147,3 +145,5 @@ document.addEventListener("click",e=>{const option=e.target.closest("#background
 
 renderReferenceHot=function(){const pageSize=8,start=hotPage*pageSize,items=hotItems.slice(start,start+pageSize);$("#hotList").innerHTML=items.length?items.map((item,index)=>{const rank=start+index+1;return `<div class="hot-row"><span class="hot-rank hot-rank-${rank<=3?rank:"n"}">${rank}</span><a class="hot-title" href="${item.url||"https://www.baidu.com/s?wd="+encodeURIComponent(item.title)}" target="_blank" rel="noreferrer"><span class="hot-title-text">${item.title}</span>${item.tag?`<span class="hot-tag hot-tag-${item.tag==="新"?"new":"hot"}">${item.tag}</span>`:""}</a>${item.score?`<span class="hot-score">${item.score}</span>`:""}</div>`}).join(""):"<div class=\"hot-loading\">当前无数据</div>";$("#hotPrev").disabled=hotPage===0||!items.length;$("#hotNext").disabled=!items.length||start+pageSize>=hotItems.length};
 hotItems=[];hotPage=0;renderReferenceHot();loadThirdPartyHot();
+
+document.addEventListener("click",e=>{const button=e.target.closest('.floating-tools button[data-action="export"]');if(!button)return;e.stopPropagation();e.preventDefault();const link=document.createElement("a");link.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));link.download="幸福海导航备份.json";link.click();URL.revokeObjectURL(link.href)},{capture:true});
