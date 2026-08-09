@@ -1,9 +1,0 @@
-{
-  "name": "xingfuhai-nav",
-  "version": "1.0.0",
-  "private": true,
-  "description": "幸福海导航 - 个人导航页",
-  "scripts": {
-    "start": "node server.js"
-  }
-}
